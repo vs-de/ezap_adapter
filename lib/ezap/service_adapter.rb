@@ -10,7 +10,46 @@ module Ezap
   
   class ServiceAdapter
 
-    GM_ADDR = "tcp://127.0.0.1:43691"
+    CFG_FILE_NAME = 'ezap_adapter.yml'
+    @@config = {}
+    
+    #hack to catch the app_root
+    def self.inherited k
+      app_rt = @@config[:app_root]
+      path = File.expand_path('..', caller.first.split(':').shift)
+      while (parent = File.expand_path('..', path)) != path
+        
+        puts "trying #{path}"
+        break if try_config(path)
+        path = parent
+      end
+    end
+
+    def self.try_config path
+      cfg_try0 = File.join(path, 'ezap_adapter.yml')
+      cfg_try1 = File.join(path, 'config', CFG_FILE_NAME)
+      if File.exists?(cfg_try0)
+        puts "loading ezap adapter config from #{cfg_try0}..."
+        @@config.merge!(YAML.load_file(cfg_try0).symbolize_keys_rec!)
+      elsif File.exists?(cfg_try1)
+        puts "loading ezap adapter config from #{cfg_try1}..."
+        @@config.merge!(YAML.load_file(cfg_try1).symbolize_keys_rec!)
+      else
+        false
+      end
+    end
+
+    def self.config
+      @@config
+    end
+
+    def config
+      self.class.config
+    end
+
+    def gm_addr
+      @@config[:global_master_address]# || "tcp://127.0.0.1:43691"
+    end
 
     attr_reader :adapter_id
 
@@ -106,7 +145,7 @@ module Ezap
     
     def _gm_init
       @_gm_sock = Ezap::ZMQ_CTX.socket(ZMQ::REQ)
-      @_gm_sock.connect(GM_ADDR)
+      @_gm_sock.connect(gm_addr)
     end
 
     def _srv_init addr
