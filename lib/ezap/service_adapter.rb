@@ -18,8 +18,6 @@ module Ezap
       app_rt = @@config[:app_root]
       path = File.expand_path('..', caller.first.split(':').shift)
       while (parent = File.expand_path('..', path)) != path
-        
-        puts "trying #{path}"
         break if try_config(path)
         path = parent
       end
