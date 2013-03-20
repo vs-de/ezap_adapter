@@ -10,43 +10,12 @@ module Ezap
   
   class ServiceAdapter
 
-    CFG_FILE_NAME = 'ezap_adapter.yml'
-    @@config = {}
-    
-    #hack to catch the app_root
-    def self.inherited k
-      app_rt = @@config[:app_root]
-      path = File.expand_path('..', caller.first.split(':').shift)
-      while (parent = File.expand_path('..', path)) != path
-        break if try_config(path)
-        path = parent
-      end
-    end
-
-    def self.try_config path
-      cfg_try0 = File.join(path, 'ezap_adapter.yml')
-      cfg_try1 = File.join(path, 'config', CFG_FILE_NAME)
-      if File.exists?(cfg_try0)
-        puts "loading ezap adapter config from #{cfg_try0}..."
-        @@config.merge!(YAML.load_file(cfg_try0).symbolize_keys_rec!)
-      elsif File.exists?(cfg_try1)
-        puts "loading ezap adapter config from #{cfg_try1}..."
-        @@config.merge!(YAML.load_file(cfg_try1).symbolize_keys_rec!)
-      else
-        false
-      end
-    end
-
-    def self.config
-      @@config
-    end
-
-    def config
-      self.class.config
-    end
+    include Ezap::AppConfig
+    default_app_config_name 'ezap_adapter.yml'
 
     def gm_addr
-      @@config[:global_master_address]# || "tcp://127.0.0.1:43691"
+      puts app_config
+      app_config[:global_master_address]# || "tcp://127.0.0.1:43691"
     end
 
     attr_reader :adapter_id
