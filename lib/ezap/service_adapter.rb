@@ -5,17 +5,17 @@
 # Before changing or using this code, you have to accept the Ezap License in the Ezap_LICENSE.txt file 
 # included in the package or repository received by obtaining this file.
 #####
-
 module Ezap
   
   class ServiceAdapter
 
-    include Ezap::AppConfig
-    default_app_config_name 'ezap_adapter.yml'
+    #include Ezap::AppConfig
+    #default_app_config_name 'ezap_adapter.yml'
 
     def gm_addr
-      puts app_config
-      app_config[:global_master_address]# || "tcp://127.0.0.1:43691"
+      #puts app_config
+      #app_config[:global_master_address] # || "tcp://127.0.0.1:43691"
+      Ezap.config.global_master_address
     end
 
     attr_reader :adapter_id
