@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ["Valentin Schulte"]
   gem.email         = ["valentin.schulte@wecuddle.de"]
   gem.description   = %q{Gem to connect a ruby app to an ezap-service via ServiceAdapter and RemoteModel classes}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.summary       = %q{Gem to connect a ruby app to an ezap-service}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)

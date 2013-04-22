@@ -19,8 +19,11 @@ module Ezap
     end
 
     attr_reader :adapter_id
+    attr_accessor :service_name
 
-    def initialize
+    def initialize opts={}
+      opts = {service_name: self.class.to_s}.merge!(opts)
+      self.service_name = opts[:service_name]
       _gm_init
       _locate_service
       sign_on
@@ -28,7 +31,7 @@ module Ezap
 
     def _locate_service
       #print "#{self.class} sign on: "
-      resp = _gm_req(:locate_service, self.class.to_s)
+      resp = _gm_req(:locate_service, service_name)
       #puts resp.inspect
       addr = resp['address']
       if addr
