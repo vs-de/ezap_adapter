@@ -153,7 +153,7 @@ module Ezap
     private
 
     def _zmq_init
-      @z_sock = Ezap::ZMQ_CTX.socket(ZMQ::REQ)
+      @z_sock = Ezap::ZmqCtx().socket(ZMQ::REQ)
     end
 
     def self.wrap_initializer

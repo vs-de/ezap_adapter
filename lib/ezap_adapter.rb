@@ -3,5 +3,5 @@ require "ezap/service_adapter"
 require "ezap/remote_model"
 
 module Ezap
-  ZMQ_CTX = ZMQ::Context.new
+  #ZMQ_CTX = ZMQ::Context.new
 end

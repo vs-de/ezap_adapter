@@ -114,13 +114,13 @@ module Ezap
     end
     
     def _gm_init
-      @_gm_sock = Ezap::ZMQ_CTX.socket(ZMQ::REQ)
+      @_gm_sock = Ezap::ZmqCtx().socket(ZMQ::REQ)
       @_gm_sock.connect(gm_addr)
     end
 
     def _srv_init addr
       @_srv_addr = addr
-      @_srv_sock = Ezap::ZMQ_CTX.socket(ZMQ::REQ)
+      @_srv_sock = Ezap::ZmqCtx().socket(ZMQ::REQ)
       puts "connecting..."
       ret = @_srv_sock.connect(addr)
       unless ZMQ::Util.resultcode_ok?(ret)
