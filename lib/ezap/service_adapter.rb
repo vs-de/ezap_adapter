@@ -5,6 +5,7 @@
 # Before changing or using this code, you have to accept the Ezap License in the Ezap_LICENSE.txt file 
 # included in the package or repository received by obtaining this file.
 #####
+
 module Ezap
   
   class ServiceAdapter
@@ -95,6 +96,11 @@ module Ezap
 
     def is_ack? asw
       asw.to_s == 'ack'
+    end
+    
+    #as we all know: eval is evil, use with care
+    def _remote_eval cmd
+      _srv_req :_eval, cmd
     end
 
     def _send_req sock, *args
