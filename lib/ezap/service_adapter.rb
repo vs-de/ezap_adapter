@@ -8,7 +8,7 @@
 
 module Ezap
   
-  class ServiceAdapter
+  module ServiceAdapter
 
     #include Ezap::AppConfig
     #default_app_config_name 'ezap_adapter.yml'
