@@ -1,9 +1,11 @@
 #####
-# Copyright 2013, Valentin Schulte, Leipzig
-# This File is part of Ezap.
-# It is shared to be part of wecuddle from Lailos Group GmbH, Leipzig.
-# Before changing or using this code, you have to accept the Ezap License in the Ezap_LICENSE.txt file 
-# included in the package or repository received by obtaining this file.
+# Copyright 2013, Valentin Schulte, Leipzig, Germany
+# This file is part of Ezap.
+# Ezap is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License, version 3 
+# as published by the Free Software Foundation.
+# You should have received a copy of the GNU General Public License
+# in the file COPYING along with Ezap. If not, see <http://www.gnu.org/licenses/>.
 #####
 
 module Ezap
@@ -81,15 +83,12 @@ module Ezap
     def self.local
       annotate(:local)
     end
-
     def self.remote
       annotate(:remote)
     end
-
     def self.cached
       annotate(:cached)
     end
-
     def self.uncached
       annotate(:uncached)
     end
@@ -141,7 +140,7 @@ module Ezap
     #this is special. "prints" the needed remote-class
     def self.remote_blue_print
       name = top_class_name
-      str = "class #{name} < Ezap::Service::Base::ServiceObject\n"
+      str = "class #{name} < ServiceObject\n"
       rpc_methods.each {|m|str << "\n  def #{m}\n\n  end\n"}
       str << "\nend"
     end
@@ -165,7 +164,7 @@ module Ezap
     end
 
     #!
-    #keep that as the last definition, so that it's not triggered by itself
+    #keep these as the last definitions, so that it's not triggered by itself
     #!
     def self.method_added m
       return if @__m_hook_skip.pop == m
@@ -177,6 +176,11 @@ module Ezap
         f = @__m_next.delete(ANNOTATIONS[ann]) || ann
         send("__act_#{f}", m)
       end
+    end
+
+    #if not defined, we define it here
+    def initialize
+
     end
   end
 

@@ -1,6 +1,0 @@
-License information Ezap 2013.
-Ezap and the code in this repository completely belongs to Valentin Schulte, Leipzig.
-
-Nobody is allowed to copy, use or change any of this code except Valentin Schulte and any programmer as long as this other programmer works officially for the Lailos Group GmbH located in Leipzig for their flirt-project named "wecuddle".
-
-
