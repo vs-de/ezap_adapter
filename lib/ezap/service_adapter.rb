@@ -46,7 +46,7 @@ module Ezap
 
     def sign_on
       @adapter_id = _srv_req :_adp_sign_on
-      raise "adapter id: #{@adapter_id.inspect}" unless @adapter_id.is_a?(Fixnum)
+      raise "strange adapter id: #{@adapter_id.inspect}" unless @adapter_id.is_a?(Fixnum)
     end
 
     def sign_off
@@ -56,9 +56,14 @@ module Ezap
 
     def _remote_init_model model, *args
       m_id = service_request :_adp_model_init, model.class.top_class_name, *args
-      raise "model id: #{m_id.inspect}" unless m_id.is_a?(Fixnum)
+      raise "strange model id: #{m_id.inspect}" unless m_id.is_a?(Fixnum)
       m_id
     end
+
+    def _remote_model_send model, *args
+      service_request :_adp_model_send, model.class.top_class_name, model.m_id, *args
+    end
+    
 
     def model_blue_print model_class
       return <<SRC

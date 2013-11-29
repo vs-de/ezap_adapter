@@ -33,8 +33,10 @@ module Ezap
       #_sign_on
     end
 
-    def self.proxy_call *args
+    #runs in the inherited class scope
+    def self.proxy_call *args #obj, m, *args
       puts "proxy call: #{args.inspect}"
+
     end
 
     ############
@@ -97,17 +99,24 @@ module Ezap
     #annotation hooks#
     ##################
 
-    #TODO: that "self"-usage inside the block might be dangerous and not have this meaning in future ruby versions
     def self.__act_remote m
       (@@rpc_ms[self] ||= [])  << m
       new_m = :"__m_orig_#{m}"
       @__m_hook_skip.push(new_m)
       alias_method new_m, m
       #@__m_hook_skip.push(m)
-      Ezap::RemoteModel.instance_variable_get("@__m_hook_skip").push(m)
-      Ezap::RemoteModel.send(:define_method, m) do |*args|
-        self.class.proxy_call self, *args
+      #Ezap::RemoteModel.instance_variable_get("@__m_hook_skip").push(m)
+      #Ezap::RemoteModel.send(:define_method, m) do |*args|
+      @__m_hook_skip.push(m)
+      #define_method m do |*args|
+      self.send(:define_method, m) do |*args|
+        #self.class.proxy_call self, m, *args
+        __proxy_call __method__, *args
       end
+    end
+
+    def __proxy_call m, *args
+      @service._remote_model_send self, m, *args
     end
 
     def self.__act_local m
